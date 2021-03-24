@@ -1,0 +1,42 @@
+ file:
+                    state: directory
+                    path: "/dvd"
+
+          - name: To mount ..
+            mount:
+                   src: "dev/cdrom"
+                   path: "/dvd"
+                   state: mounted
+                   fstype: "iso9660"
+
+          - name: To create yum repo for dvd1
+            yum_repository:
+                    baseurl: "/dvd/Appstream"
+                    name: "mydvd1"
+                    description: "my yum dvd1 for pkg"
+                    gpgcheck: no
+
+          - name: To create yum repo for dvd2
+            yum_repository:
+                    baseurl: "/dvd/BaseOs
+                    name: "mydvd2"
+                    description: "my yum dvd2 for pkg"
+                    gpgcheck: no
+
+          - name: To see configured repositories
+            command: yum repolist
+
+          - name: to install lb
+            package:
+                    name: "haproxy"
+
+          - name: To copy config file
+            template:
+                    dest: "/etc/haproxy/haproxy.cfg"
+                    src: "haproxy.cfg"
+
+          - name: To start service
+            service:
+                    name: "haproxy"
+                    state: started
+
